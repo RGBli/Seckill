@@ -11,8 +11,6 @@ public interface RedisService {
 
     Object get(String key);
 
-    String[] getStrArr(String key);
-
     Boolean del(String key);
 
     Long del(List<String> keys);
@@ -28,4 +26,8 @@ public interface RedisService {
     void execute();
 
     void release();
+
+    void hset(String key, String filed, Object value);
+
+    void hdel(String key, String field);
 }

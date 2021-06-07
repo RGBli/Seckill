@@ -2,6 +2,7 @@ package com.lbw.seckill.core.kafka;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lbw.seckill.core.util.Constants;
+import com.lbw.seckill.model.CartItem;
 import com.lbw.seckill.model.Stock;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import com.lbw.seckill.service.api.OrderService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+// Kafka consumer
 @Component
 public class Consumer {
 
@@ -21,7 +23,7 @@ public class Consumer {
     public void listen(ConsumerRecord<String, String> record) throws Exception {
         Optional<?> KafkaMessage = Optional.ofNullable(record.value());
         String message = (String) KafkaMessage.get();
-        Stock stock = JSONObject.parseObject(message, Stock.class);
-        orderService.consumeFromKafka(stock);
+        CartItem item = JSONObject.parseObject(message, CartItem.class);
+
     }
 }

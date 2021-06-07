@@ -1,28 +1,27 @@
 package com.lbw.seckill.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+
+/**
+ * 商品实体，主要用于查库存，以及价格等商品信息
+ */
+@TableName("stock")
 public class Stock {
 
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     private String name;
 
-    private Integer count;
+    private Float price;
 
-    private Integer sale;
+    private String detail;
+
+    private Integer number;
 
     private Integer version;
-
-    public Stock() {
-
-    }
-
-    public Stock(Integer id, String name, Integer count, Integer sale, Integer version) {
-        this.id = id;
-        this.name = name;
-        this.count = count;
-        this.sale = sale;
-        this.version = version;
-    }
 
     public Integer getId() {
         return id;
@@ -40,20 +39,28 @@ public class Stock {
         this.name = name;
     }
 
-    public Integer getCount() {
-        return count;
+    public Float getPrice() {
+        return price;
     }
 
-    public void setCount(Integer count) {
-        this.count = count;
+    public void setPrice(Float price) {
+        this.price = price;
     }
 
-    public Integer getSale() {
-        return sale;
+    public String getDetail() {
+        return detail;
     }
 
-    public void setSale(Integer sale) {
-        this.sale = sale;
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     public Integer getVersion() {
@@ -64,8 +71,11 @@ public class Stock {
         this.version = version;
     }
 
-    @Override
-    public String toString() {
-        return count + "_" + sale + "_" + name + "_" + version;
+    public Stock(String name, Float price, String detail, Integer number, Integer version) {
+        this.name = name;
+        this.price = price;
+        this.detail = detail;
+        this.number = number;
+        this.version = version;
     }
 }

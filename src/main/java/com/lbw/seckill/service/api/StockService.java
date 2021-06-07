@@ -1,21 +1,20 @@
 package com.lbw.seckill.service.api;
 
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.lbw.seckill.model.Stock;
 
-public interface StockService {
+import java.util.List;
 
-    int initStock() throws Exception;
+public interface StockService extends IService<Stock> {
 
-    int updateStockWithLock(Stock stock) throws Exception;
+    // 从数据库中获取指定商品的库存
+    Stock getStock(int sid) throws Exception;
 
-    int updateStockWithOL(Stock stock) throws Exception;
+    // 从 Redis 中获取指定商品的库存
+    Stock getStockFromRedis(int sid) throws Exception;
 
-    int updateStockWithOLRedis(Stock stock) throws Exception;
+    List<Stock> getStocksByName(String name);
 
-    Stock checkStock(int sid) throws Exception;
-
-    Stock checkStockFromRedis(int sid) throws Exception;
-
-    Stock selectStockByID(int id) throws Exception;
+    void updateStock(Stock stock);
 }

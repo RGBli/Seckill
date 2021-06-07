@@ -1,6 +1,7 @@
 package com.lbw.seckill.controller;
 
 
+import com.lbw.seckill.core.exception.RateLimitException;
 import com.lbw.seckill.core.redis.RedisService;
 import com.lbw.seckill.core.redis.Limit;
 import com.lbw.seckill.service.api.OrderService;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/")
 @Slf4j
-public class IndexController {
+public class OrderController {
     private static final String success = "SUCCESS";
     private static final String error = "ERROR";
 
@@ -87,7 +88,7 @@ public class IndexController {
     public String addOrderWithOLRedisLimitKafka(int saleId) throws Exception {
         // 接口限流
         if (!limit.passLimit()) {
-            return error;
+            throw new RateLimitException("This API is not working temporarily");
         }
         orderService.CreateOrderWithOLRedisLimitKafka(saleId);
         log.info("add the request to a kafka queue");

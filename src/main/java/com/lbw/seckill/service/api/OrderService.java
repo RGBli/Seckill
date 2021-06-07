@@ -1,21 +1,15 @@
 package com.lbw.seckill.service.api;
 
 
-import com.lbw.seckill.model.Stock;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.lbw.seckill.model.CartItem;
+import com.lbw.seckill.model.Order;
 
-public interface OrderService {
+import java.util.List;
 
-    int clearOrderTable() throws Exception;
+public interface OrderService extends IService<Order> {
 
-    int consumeFromKafka(Stock stock) throws Exception;
+    void createOrder(int uid, int sid, int number) throws Exception;
 
-    int createOrder(Stock stock) throws Exception;
-
-    int createOrderWithLock(int sid) throws Exception;
-
-    int createOrderWithOL(int sid) throws Exception;
-
-    int CreateOrderWithOLRedis(int sid) throws Exception;
-
-    void CreateOrderWithOLRedisLimitKafka(int sid) throws Exception;
+    List<Order> getOrdersByName(int uid, String name);
 }

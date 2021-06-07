@@ -8,7 +8,6 @@ import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -44,15 +43,6 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public Object get(String key) {
         return redisTemplate.opsForValue().get(key);
-    }
-
-    @Override
-    public String[] getStrArr(String key) {
-        Object obj = redisTemplate.opsForValue().get(key);
-        if (obj == null) {
-            return null;
-        }
-        return obj.toString().split("_");
     }
 
     @Override
@@ -97,5 +87,15 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public void release() {
         TransactionSynchronizationManager.unbindResource(redisTemplate.getConnectionFactory());
+    }
+
+    @Override
+    public void hset(String key, String filed, Object value) {
+        redisTemplate.opsForHash().put(key, filed, value);
+    }
+
+    @Override
+    public void hdel(String key, String field) {
+        redisTemplate.opsForHash().delete(key, field);
     }
 }
