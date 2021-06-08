@@ -18,7 +18,7 @@ public interface StockService extends IService<Stock> {
 
     List<Stock> getStocksByName(String name);
 
-    void updateStock(int sid, int offset, int version) throws OutOfStockException;
+    void updateStock(int sid, int offset, int version) throws OutOfStockException, InterruptedException;
 
     int getStockNum(int sid);
 

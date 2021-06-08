@@ -44,19 +44,23 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock> implements
 
     // 核心逻辑
     @Override
-    public void updateStock(int sid, int offset, int version) throws OutOfStockException {
+    public void updateStock(int sid, int offset, int version) throws OutOfStockException, InterruptedException {
+        // 采用延时双删的一致性策略
+        redisService.del(Constants.STOCK_PREFIX + sid);
         // 乐观锁失败，则换悲观锁
         if (stockMapper.updateStockWithCas(sid, offset, version) == 0) {
             synchronized (this) {
                 int number = getStockNum(sid);
                 if (number >= offset) {
                     stockMapper.updateStockWithLock(sid, offset);
+                    Thread.sleep(100);
                     redisService.del(Constants.STOCK_PREFIX + sid);
                 } else {
                     throw new OutOfStockException("Stocks are not sufficient");
                 }
             }
         } else {
+            Thread.sleep(100);
             redisService.del(Constants.STOCK_PREFIX + sid);
         }
     }

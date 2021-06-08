@@ -5,7 +5,6 @@ import com.lbw.seckill.core.exception.RateLimitException;
 import com.lbw.seckill.core.redis.Limit;
 import com.lbw.seckill.core.result.BaseResult;
 import com.lbw.seckill.service.api.OrderService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
