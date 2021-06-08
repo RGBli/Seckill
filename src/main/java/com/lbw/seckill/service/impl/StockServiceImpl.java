@@ -6,7 +6,6 @@ import com.lbw.seckill.core.exception.OutOfStockException;
 import com.lbw.seckill.core.redis.RedisService;
 import com.lbw.seckill.core.util.Constants;
 import com.lbw.seckill.mapper.StockMapper;
-import com.lbw.seckill.model.CartItem;
 import com.lbw.seckill.model.Stock;
 import com.lbw.seckill.service.api.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,21 +32,14 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock> implements
     public Stock getStockFromRedis(int sid) throws Exception {
         Stock stock = (Stock) redisService.get(Constants.STOCK_PREFIX + sid);
         // 如果 Redis miss，则从 DB 查询，并写入 Redis
-        // 设置过期时间为 60s，以避免长时间的数据库和缓存的数据不一致问题
         if (stock == null) {
             stock = getStock(sid);
             if (stock != null) {
+                // 设置过期时间为 60s，以避免长时间的数据库和缓存的数据不一致问题
                 redisService.set(Constants.STOCK_PREFIX + sid, stock, 60);
             }
         }
         return stock;
-    }
-
-    @Override
-    public List<Stock> getStocksByName(String name) {
-        QueryWrapper<Stock> queryWrapper = new QueryWrapper<>();
-        queryWrapper.like("name", name);
-        return list(queryWrapper);
     }
 
     // 核心逻辑
@@ -67,6 +59,13 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock> implements
         } else {
             redisService.del(Constants.STOCK_PREFIX + sid);
         }
+    }
+
+    @Override
+    public List<Stock> getStocksByName(String name) {
+        QueryWrapper<Stock> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("name", name);
+        return list(queryWrapper);
     }
 
     @Override
