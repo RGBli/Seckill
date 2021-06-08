@@ -98,4 +98,14 @@ public class RedisServiceImpl implements RedisService {
     public void hdel(String key, String field) {
         redisTemplate.opsForHash().delete(key, field);
     }
+
+    @Override
+    public Set<Object> hkeys(String key) {
+        return redisTemplate.opsForHash().keys(key);
+    }
+
+    @Override
+    public List<Object> hvals(String key) {
+        return redisTemplate.opsForHash().values(key);
+    }
 }

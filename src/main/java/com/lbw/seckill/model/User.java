@@ -61,4 +61,11 @@ public class User {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public User(String name, Boolean gender, Date birthDay, String address) {
+        this.name = name;
+        this.gender = gender;
+        this.birthDay = birthDay;
+        this.address = address;
+    }
 }

@@ -1,6 +1,7 @@
 package com.lbw.seckill.core.redis;
 
 import java.util.List;
+import java.util.Set;
 
 public interface RedisService {
     Object executeLuaScript(String path, List<String> keys, Object... args);
@@ -30,4 +31,8 @@ public interface RedisService {
     void hset(String key, String filed, Object value);
 
     void hdel(String key, String field);
+
+    Set<Object> hkeys(String key);
+
+    public List<Object> hvals(String key);
 }

@@ -22,4 +22,12 @@ public class Constants {
 
     // Kafka 的 topic 名
     public final static String KAFKA_TOPIC = "seckill";
+
+
+    /**
+     * 返回信息
+     */
+
+    public static final String SUCCESS = "SUCCESS";
+    public static final String ERROR = "ERROR";
 }
