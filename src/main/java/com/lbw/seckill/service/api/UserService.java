@@ -7,5 +7,5 @@ public interface UserService extends IService<User> {
 
     String getAddress(int uid);
 
-    boolean checkPassword(String name, String password);
+    Object checkPassword(String name, String password);
 }

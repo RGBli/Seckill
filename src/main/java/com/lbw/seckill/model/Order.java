@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 /**
  * 订单实体
  */
-@TableName("order")
+@TableName("`order`")
 public class Order {
 
     @TableId(value = "id", type = IdType.AUTO)
@@ -104,6 +104,8 @@ public class Order {
     public void setStockVersion(int stockVersion) {
         this.stockVersion = stockVersion;
     }
+
+    public Order() {}
 
     public Order(Integer sid, Integer uid, String name, Integer number, Float totalPrice, String address, Timestamp createTime, int stockVersion) {
         this.sid = sid;

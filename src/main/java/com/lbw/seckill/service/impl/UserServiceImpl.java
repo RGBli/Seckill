@@ -18,10 +18,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     // 给 name 和 password 字段添加联合索引，可以实现覆盖索引
     @Override
-    public boolean checkPassword(String name, String password) {
+    public Object checkPassword(String name, String password) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.select("id").eq("name", name).eq("password", password);
+        queryWrapper.eq("name", name).eq("password", password);
         User user = getOne(queryWrapper);
-        return user != null;
+        return user == null ? null : user.getId();
     }
 }

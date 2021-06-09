@@ -1,4 +1,4 @@
-package com.lbw.seckill.core.result;
+package com.lbw.seckill.core.util;
 
 public class BaseResult<T> {
 

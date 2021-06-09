@@ -71,6 +71,8 @@ public class Stock {
         this.version = version;
     }
 
+    public Stock() {}
+
     public Stock(String name, Float price, String detail, Integer number, Integer version) {
         this.name = name;
         this.price = price;

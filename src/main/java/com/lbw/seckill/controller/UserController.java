@@ -1,7 +1,8 @@
 package com.lbw.seckill.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.lbw.seckill.core.result.BaseResult;
+import com.lbw.seckill.core.util.BaseResult;
+import com.lbw.seckill.core.util.Util;
 import com.lbw.seckill.model.User;
 import com.lbw.seckill.service.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,21 +19,24 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping("/add")
-    public BaseResult<String> add(User user) {
+    public BaseResult<Boolean> add(User user) {
+        if (!Util.checkPassword(user.getPassword())) {
+            return new BaseResult<>(200, "ok", false);
+        }
         userService.save(user);
-        return new BaseResult<>(200, "ok", "Create new user succeed");
+        return new BaseResult<>(200, "ok", true);
     }
 
     @RequestMapping("/delete")
-    public BaseResult<String> delete(int uid) {
-        userService.removeById(uid);
-        return new BaseResult<>(200, "ok", "Delete new user succeed");
+    public BaseResult<Boolean> delete(Integer id) {
+        userService.removeById(id);
+        return new BaseResult<>(200, "ok", true);
     }
 
     @RequestMapping("/update")
-    public BaseResult<String> update(User user) {
+    public BaseResult<Boolean> update(User user) {
         userService.updateById(user);
-        return new BaseResult<>(200, "ok", "Update new user succeed");
+        return new BaseResult<>(200, "ok", true);
     }
 
     @RequestMapping("/list")

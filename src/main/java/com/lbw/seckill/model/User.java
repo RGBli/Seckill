@@ -16,6 +16,8 @@ public class User {
 
     private String name;
 
+    private String password;
+
     private Boolean gender;
 
     private Date birthday;
@@ -36,6 +38,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Boolean getGender() {
@@ -62,8 +72,11 @@ public class User {
         this.address = address;
     }
 
-    public User(String name, Boolean gender, Date birthday, String address) {
+    public User() {}
+
+    public User(String name, String password, Boolean gender, Date birthday, String address) {
         this.name = name;
+        this.password = password;
         this.gender = gender;
         this.birthday = birthday;
         this.address = address;
