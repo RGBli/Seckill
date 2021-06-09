@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @RequestMapping("/delete")
-    public BaseResult<String> add(int uid) {
+    public BaseResult<String> delete(int uid) {
         userService.removeById(uid);
         return new BaseResult<>(200, "ok", "Delete new user succeed");
     }

@@ -18,7 +18,7 @@ public class User {
 
     private Boolean gender;
 
-    private Date birthDay;
+    private Date birthday;
 
     private String address;
 
@@ -46,12 +46,12 @@ public class User {
         this.gender = gender;
     }
 
-    public Date getBirthDay() {
-        return birthDay;
+    public Date getBirthday() {
+        return birthday;
     }
 
-    public void setBirthDay(Date birthDay) {
-        this.birthDay = birthDay;
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     public String getAddress() {
@@ -62,10 +62,10 @@ public class User {
         this.address = address;
     }
 
-    public User(String name, Boolean gender, Date birthDay, String address) {
+    public User(String name, Boolean gender, Date birthday, String address) {
         this.name = name;
         this.gender = gender;
-        this.birthDay = birthDay;
+        this.birthday = birthday;
         this.address = address;
     }
 }

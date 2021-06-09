@@ -57,7 +57,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             throw new OutOfStockException("Stocks are not sufficient");
         }
         // 发往 Kafka，异步减库存和创建订单
-        Order order = new Order(sid, uid, number, stock.getPrice() * number, null, null, stock.getVersion());
+        Order order = new Order(sid, uid, stock.getName(), number, stock.getPrice() * number, null, null, stock.getVersion());
         kafkaTemplate.send(Constants.KAFKA_TOPIC, JSON.toJSONString(order));
     }
 }

@@ -1,9 +1,7 @@
 package com.lbw.seckill.controller;
 
 import com.lbw.seckill.core.result.BaseResult;
-import com.lbw.seckill.model.CartItem;
 import com.lbw.seckill.service.api.CartService;
-import com.lbw.seckill.service.api.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 /**
  * 订单实体
@@ -20,6 +19,8 @@ public class Order {
     private Integer sid;
 
     private Integer uid;
+
+    private String name;
 
     private Integer number;
 
@@ -54,6 +55,14 @@ public class Order {
 
     public void setUid(Integer uid) {
         this.uid = uid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getNumber() {
@@ -96,9 +105,10 @@ public class Order {
         this.stockVersion = stockVersion;
     }
 
-    public Order(Integer sid, Integer uid, Integer number, Float totalPrice, String address, Timestamp createTime, int stockVersion) {
+    public Order(Integer sid, Integer uid, String name, Integer number, Float totalPrice, String address, Timestamp createTime, int stockVersion) {
         this.sid = sid;
         this.uid = uid;
+        this.name = name;
         this.number = number;
         this.totalPrice = totalPrice;
         this.address = address;

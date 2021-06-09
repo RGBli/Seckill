@@ -14,6 +14,4 @@ public interface OrderService extends IService<Order> {
     List<Order> getOrdersByName(int uid, String name);
 
     void seckill(int uid, int sid, int number) throws Exception;
-
-
 }

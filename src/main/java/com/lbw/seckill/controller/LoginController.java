@@ -1,9 +1,7 @@
 package com.lbw.seckill.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lbw.seckill.core.result.BaseResult;
-import com.lbw.seckill.model.User;
 import com.lbw.seckill.service.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
