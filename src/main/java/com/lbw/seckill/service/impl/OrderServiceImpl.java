@@ -40,13 +40,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         save(order);
     }
 
-    @Override
-    public List<Order> getOrdersByName(int uid, String name) {
-        QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("uid", uid).like("name", name);
-        return list(queryWrapper);
-    }
-
     // 核心逻辑
     @Override
     public void seckill(int uid, int sid, int number) throws Exception {
@@ -59,5 +52,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         // 发往 Kafka，异步减库存和创建订单
         Order order = new Order(sid, uid, stock.getName(), number, stock.getPrice() * number, null, null, stock.getVersion());
         kafkaTemplate.send(Constants.KAFKA_TOPIC, JSON.toJSONString(order));
+    }
+
+    @Override
+    public List<Order> getOrdersByName(int uid, String name) {
+        QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
+        // MybatisPlus 的 like 是环绕模糊查询，即 %#{name}%，不会走索引
+        queryWrapper.eq("uid", uid).like("name", name);
+        return list(queryWrapper);
     }
 }
