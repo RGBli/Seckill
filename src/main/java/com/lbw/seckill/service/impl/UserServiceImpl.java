@@ -20,7 +20,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Object checkPassword(String name, String password) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("name", name).eq("password", password);
+        queryWrapper.select("id").eq("name", name).eq("password", password);
         User user = getOne(queryWrapper);
         return user == null ? null : user.getId();
     }

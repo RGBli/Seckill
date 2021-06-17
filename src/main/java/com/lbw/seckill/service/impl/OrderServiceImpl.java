@@ -14,6 +14,7 @@ import com.lbw.seckill.service.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -31,6 +32,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     private KafkaTemplate<String, String> kafkaTemplate;
 
     // 核心逻辑
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void createOrder(Order order) throws Exception {
         int uid = order.getUid();
