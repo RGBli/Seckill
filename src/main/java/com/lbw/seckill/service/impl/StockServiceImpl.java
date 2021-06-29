@@ -2,7 +2,7 @@ package com.lbw.seckill.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.lbw.seckill.core.exception.OutOfStockException;
+import com.lbw.seckill.core.exception.SeckillFailException;
 import com.lbw.seckill.core.redis.RedisService;
 import com.lbw.seckill.core.util.Constants;
 import com.lbw.seckill.mapper.StockMapper;
@@ -22,16 +22,14 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock> implements
     @Autowired
     private RedisService redisService;
 
-    @Override
-    public Stock getStock(int sid) throws Exception {
-        return getById(sid);
-    }
-
-    // 核心逻辑
+    /**
+     * 核心逻辑
+     * 试图从 Redis 中获取商品信息
+     * 如果 Redis miss，则从 DB 查询，并写入 Redis
+     */
     @Override
     public Stock getStockFromRedis(int sid) throws Exception {
         Stock stock = (Stock) redisService.get(Constants.STOCK_PREFIX + sid);
-        // 如果 Redis miss，则从 DB 查询，并写入 Redis
         if (stock == null) {
             stock = getStock(sid);
             if (stock != null) {
@@ -42,26 +40,19 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock> implements
         return stock;
     }
 
-    // 核心逻辑
+    /**
+     * 核心逻辑
+     * 乐观锁更新库存，更新失败则抛出异常并让用户重试
+     */
     @Override
-    public void updateStock(int sid, int offset, int version) throws OutOfStockException, InterruptedException {
+    public void updateStock(int sid, int offset, int version) throws SeckillFailException, InterruptedException {
         // 采用延时双删的一致性策略
         redisService.del(Constants.STOCK_PREFIX + sid);
-        // 乐观锁失败，则换悲观锁
-        if (stockMapper.updateStockWithCas(sid, offset, version) == 0) {
-            synchronized (this) {
-                int number = getStockNum(sid);
-                if (number >= offset) {
-                    stockMapper.updateStockWithLock(sid, offset);
-                    Thread.sleep(100);
-                    redisService.del(Constants.STOCK_PREFIX + sid);
-                } else {
-                    throw new OutOfStockException("Stocks are not sufficient");
-                }
-            }
-        } else {
+        if (stockMapper.updateStockWithCas(sid, offset, version) != 0) {
             Thread.sleep(100);
             redisService.del(Constants.STOCK_PREFIX + sid);
+        } else {
+            throw new SeckillFailException("Seckill failed due to unknown reason, please try again");
         }
     }
 
@@ -84,5 +75,10 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock> implements
         QueryWrapper<Stock> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("price").eq("id", sid);
         return getOne(queryWrapper).getPrice();
+    }
+
+    @Override
+    public Stock getStock(int sid) {
+        return getById(sid);
     }
 }

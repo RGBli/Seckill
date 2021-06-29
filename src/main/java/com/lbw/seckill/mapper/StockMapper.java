@@ -9,7 +9,4 @@ import org.apache.ibatis.annotations.Update;
 public interface StockMapper extends BaseMapper<Stock> {
     @Update("UPDATE `stock` SET number = number - #{offset}, version = version + 1 where id = #{sid} and version = #{version}")
     int updateStockWithCas(int sid, int offset, int version);
-
-    @Update("UPDATE `stock` SET number = number - #{offset}, version = version + 1 where id = #{sid}")
-    int updateStockWithLock(int sid, int offset);
 }

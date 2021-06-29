@@ -31,18 +31,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
 
-    // 核心逻辑
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void createOrder(Order order) throws Exception {
-        int uid = order.getUid();
-        stockService.updateStock(order.getSid(), order.getNumber(), order.getStockVersion());
-        order.setAddress(userService.getAddress(uid));
-        order.setCreateTime(new Timestamp(System.currentTimeMillis()));
-        save(order);
-    }
-
-    // 核心逻辑
+    /**
+     * 核心逻辑
+     * 秒杀的主接口
+     * 查询库存，如果满足要求则将后续请求发送给 Kafka，由 Kafka 消费者异步完成扣库存和保存订单操作
+     */
     @Override
     public void seckill(int uid, int sid, int number) throws Exception {
         // 查库存
@@ -54,6 +47,22 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         // 发往 Kafka，异步减库存和创建订单
         Order order = new Order(sid, uid, stock.getName(), number, stock.getPrice() * number, null, null, stock.getVersion());
         kafkaTemplate.send(Constants.KAFKA_TOPIC, JSON.toJSONString(order));
+    }
+
+    /**
+     * 核心逻辑
+     * 更新库存并保存订单逻辑，供 Kafka 消费者调用
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void createOrder(Order order) throws Exception {
+        int uid = order.getUid();
+        // 更新库存
+        stockService.updateStock(order.getSid(), order.getNumber(), order.getStockVersion());
+        order.setAddress(userService.getAddress(uid));
+        order.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        // 保存订单
+        save(order);
     }
 
     @Override

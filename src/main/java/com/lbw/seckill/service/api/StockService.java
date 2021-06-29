@@ -3,6 +3,7 @@ package com.lbw.seckill.service.api;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lbw.seckill.core.exception.OutOfStockException;
+import com.lbw.seckill.core.exception.SeckillFailException;
 import com.lbw.seckill.model.CartItem;
 import com.lbw.seckill.model.Stock;
 
@@ -18,7 +19,7 @@ public interface StockService extends IService<Stock> {
 
     List<Stock> getStocksByName(String name);
 
-    void updateStock(int sid, int offset, int version) throws OutOfStockException, InterruptedException;
+    void updateStock(int sid, int offset, int version) throws OutOfStockException, InterruptedException, SeckillFailException;
 
     int getStockNum(int sid);
 
