@@ -2,6 +2,8 @@ package com.lbw.seckill.service.api;
 
 import com.lbw.seckill.model.CartItem;
 
+import java.util.List;
+
 public interface CartService {
     // 向 Redis 添加一个 CartItem
     void addCartItem(int uid, int sid, int number);
@@ -10,5 +12,8 @@ public interface CartService {
     void deleteCartItem(int uid, int itemId);
 
     // 在刷新购物车时更新 CartItem 的信息
-    void updateCartItem(int uid) throws Exception;
+    void updateCartItem(int uid);
+
+    // 获取用户购物车中的所有 CartItem
+    List<CartItem> getAllCartItems(int uid);
 }

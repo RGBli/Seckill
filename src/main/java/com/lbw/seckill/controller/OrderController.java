@@ -21,7 +21,7 @@ public class OrderController {
     @Autowired
     private Limit limit;
 
-    @RequestMapping("seckill")
+    @RequestMapping("/{md5}/seckill")
     public BaseResult<Boolean> seckill(Integer uid, Integer sid, Integer number) throws Exception {
         // 接口限流
         if (!limit.passLimit()) {
