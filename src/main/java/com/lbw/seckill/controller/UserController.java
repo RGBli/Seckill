@@ -6,6 +6,7 @@ import com.lbw.seckill.core.util.Util;
 import com.lbw.seckill.model.User;
 import com.lbw.seckill.service.api.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,14 +28,14 @@ public class UserController {
         return new BaseResult<>(200, "ok", true);
     }
 
-    @RequestMapping("/delete")
-    public BaseResult<Boolean> delete(Integer id) {
-        userService.removeById(id);
+    @RequestMapping("/{uid}/delete")
+    public BaseResult<Boolean> delete(@PathVariable Integer uid) {
+        userService.removeById(uid);
         return new BaseResult<>(200, "ok", true);
     }
 
-    @RequestMapping("/update")
-    public BaseResult<Boolean> update(User user) {
+    @RequestMapping("/{uid}/update")
+    public BaseResult<Boolean> update(@PathVariable Integer uid, User user) {
         userService.updateById(user);
         return new BaseResult<>(200, "ok", true);
     }
